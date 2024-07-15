@@ -8,4 +8,4 @@ sort(a.begin(),a.end());
            min_diff = min(min_diff , diff); 
            i++, j++; 
        }
-       return mini;
+       return min_diff;
