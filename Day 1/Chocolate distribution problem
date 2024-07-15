@@ -1,0 +1,11 @@
+sort(a.begin(),a.end());
+        
+       long long int min_diff = INT_MAX; 
+       int i = 0; 
+       int j = m-1; 
+       while(j < n){
+           long long int diff = a[j]- a[i]; 
+           min_diff = min(min_diff , diff); 
+           i++, j++; 
+       }
+       return mini;
