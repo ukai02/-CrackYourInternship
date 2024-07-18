@@ -1,0 +1,28 @@
+class Solution {
+public:
+    string convertToTitle(int columnNumber) {
+        // string ans="";
+        // while(columnNumber>26){
+        //     int a=columnNumber%26;
+        //     if(a==0){
+        //         a=26;
+        //         columnNumber=(columnNumber/26)-1;
+        //     }
+        //     else    columnNumber=columnNumber/26;
+        //     ans+=char(a+64);
+        // }
+        // ans+=char(columnNumber+64);
+        // reverse(ans.begin(),ans.end());
+        // return ans;
+
+        string ans = "";
+        while(columnNumber>0){
+            columnNumber--;
+            int currentdigit = columnNumber%26;
+            columnNumber = columnNumber/26;
+            ans.push_back(currentdigit+'A');
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};
