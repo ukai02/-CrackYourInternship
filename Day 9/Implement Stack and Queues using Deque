@@ -1,0 +1,41 @@
+--for stack
+
+deque<int> q;
+void push(int x){
+  q.push_back(x);
+}
+int pop(){
+  int x=-1;
+  if(!q.empty){
+    x=q.back();
+    q.pop_back();
+  }
+  return x;
+}
+int top(){
+  return q.back();
+}
+bool empty(){
+  return (q.empty()==0);
+}
+
+--for queue
+
+deque<int> q;
+void push(int x){
+  q.push_back(x);
+}
+int pop(){
+  int x=-1;
+  if(!q.empty){
+    x=q.front();
+    q.pop_front();
+  }
+  return x;
+}
+int top(){
+  return q.front();
+}
+bool empty(){
+  return (q.empty()==0);
+}
