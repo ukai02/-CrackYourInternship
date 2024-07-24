@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<int> NextSmaller(vector<int>& arr){
+        stack<int> s;
+        vector<int> ans(arr.size());
+        for(int i=arr.size()-1;i>=0;i--){
+            while(!s.empty() && arr[i]<arr[s.top()]){
+                s.pop();
+            }
+            if(s.empty())
+                ans[i]=arr.size();
+            else
+                ans[i]=s.top();
+            s.push(i);
+        }
+        return ans;
+    }
+    vector<int> PrevSmallerEqual(vector<int>& arr){
+        stack<int> s;
+        vector<int> ans(arr.size());
+        for(int i=0;i<arr.size();i++){
+            while(!s.empty() && arr[i]<=arr[s.top()]){
+                s.pop();
+            }
+            if(s.empty())
+                ans[i]=-1;
+            else
+                ans[i]=s.top();
+            s.push(i);
+        }
+        return ans;
+    }
+    int sumSubarrayMins(vector<int>& arr) {
+        vector<int> prev=PrevSmallerEqual(arr);
+        vector<int> next=NextSmaller(arr);
+        int sum=0;
+        int mod=1e9+7;
+        for(int i=0;i<arr.size();i++){
+            int left=i-prev[i];
+            int right=next[i]-i;
+            sum=(sum+(right*left*(long long)1*arr[i])%mod)%mod;
+        }
+        return sum;
+    }
+};
