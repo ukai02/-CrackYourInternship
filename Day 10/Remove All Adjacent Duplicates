@@ -1,0 +1,24 @@
+class Solution {
+public:
+    string removeDuplicates(string s, int k) {
+        string ans="";
+        stack<pair<char,int>> s1;
+        s1.push({'Z',1});
+        for(int i=0;i<s.size();i++){
+            if(s[i]==s1.top().first)
+                s1.push({s[i],s1.top().second+1});
+            else
+                s1.push({s[i],1}); 
+            if(!s.empty() && s1.top().second==k){
+                int temp=k;
+                while(temp--) s1.pop();
+            }   
+        }
+        while(s1.top().first!='Z'){
+            ans+=s1.top().first;
+            s1.pop();
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};
