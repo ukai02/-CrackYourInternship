@@ -1,0 +1,25 @@
+class Solution {
+public:
+    void recursion(int n,int open,int closed,string& a,vector<string>& ans){
+        if(a.length()==2*n){
+            ans.push_back(a);
+            return;
+        }
+        if(open<n){
+            a.push_back('(');
+            recursion(n,open+1,closed,a,ans);
+            a.pop_back();
+        }
+        if(closed<open){
+            a.push_back(')');
+            recursion(n,open,closed+1,a,ans);
+            a.pop_back();
+        }
+    }
+    vector<string> generateParenthesis(int n) {
+        vector<string> ans;
+        string a="";
+        recursion(n,0,0,a,ans); 
+        return ans;
+    }
+};
