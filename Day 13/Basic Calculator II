@@ -1,0 +1,70 @@
+class Solution {
+public:
+    int calculate(string s) {
+        --with stack
+        auto precedence = [](char c){return c == '*' || c == '/';};
+        stack<int> in;
+        stack<char> op;
+        int a=0;
+        s+='#';
+        for(auto i:s){
+            if(i==' ')  continue;
+            else if(isdigit(i))
+                a=a*10+(i-'0');
+            else{
+                in.push(a);
+                while(size(op) && precedence(i) <= precedence(op.top())) {
+                    int num1 = in.top(); in.pop();
+                    int num2 = in.top(); in.pop();
+                    char curOp = op.top();  op.pop();
+
+                    if(curOp == '*')        in.push(num2 * num1);
+                    else if(curOp == '/')   in.push(num2 / num1);
+                    else if(curOp == '+')   in.push(num2 + num1);
+                    else if(curOp == '-')   in.push(num2 - num1);
+                }
+                op.push(i);
+                a=0;
+            }
+        }
+        return in.top();
+
+        --without stack
+        int n = s.length();
+        int i=0;
+        long long prev = 0, curr = 0, res = 0;
+        char curr_oper = '+';
+        while(i < n){
+            if(s[i] >= '0' && s[i] <= '9'){
+                curr = 0;
+                while(i<n && s[i] >= '0' && s[i] <= '9'){
+                    curr = curr*10 + s[i++] - '0';
+                }
+                i--;
+                if(curr_oper == '+'){
+                    res += curr;
+                    prev = curr ;
+                }
+                else if(curr_oper == '-'){
+                    res -= curr;
+                    prev = -curr;
+                }
+                else if(curr_oper == '*'){
+                    res -= prev;
+                    res += prev * curr;
+                    prev = prev*curr;
+                }
+                else if(curr_oper == '/'){
+                    res -= prev;
+                    res += prev/curr;
+                    prev = prev/curr;
+                }
+            }
+            else if(s[i] != ' '){
+                curr_oper = s[i];
+            }
+            i++;
+        }
+        return res;
+    }
+};
