@@ -1,0 +1,78 @@
+#define data vector<int>
+class Solution {
+public:
+// using dfs (finding cycle)
+    bool dfsCheck(int node, data adj[], data &path, data &vis, data &check){
+        vis[node] = 1;
+        path[node] = 1;
+        for(auto it: adj[node]){
+            if(!vis[it]){
+                if(dfsCheck(it, adj, path, vis, check)){
+                    check[node] = 0;
+                    return true;
+                }
+            }
+            else if(path[it]){
+                check[node] = 0;
+                return true;
+            }
+        }
+
+        path[node] = 0;
+        check[node] = 1;
+        return false;
+    }
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        int n = graph.size();
+        data vis(n, 0), pathVisited(n, 0), check(n, 0);
+
+        data adj[n+1];
+        for(int i=0; i<n; i++){
+            adj[i].insert(adj[i].end(), graph[i].begin(), graph[i].end());
+        }
+
+        for(int i=0; i<n; i++){
+            if(!vis[i]) 
+                dfsCheck(i, adj, pathVisited, vis, check);
+        }
+        vector<int> ans;
+        for(int i=0; i<n; i++)
+            if(check[i]) ans.push_back(i);
+        return ans;
+
+
+
+
+    // using topological sort
+    // vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+    //     int n = graph.size();
+    //     vector<vector<int>> adj(n);
+    //     vector<int> indegree(n, 0);
+
+    //     for(int i=0; i<n; i++){
+    //         for(int j: graph[i]) {
+    //             adj[j].push_back(i);
+    //             indegree[i]++;
+    //         }
+    //     }
+
+    //     queue<int> q;
+    //     for(int i=0; i<n; i++){
+    //         if(!indegree[i]) q.push(i);
+    //     }
+
+    //     vector<int> ans;
+
+    //     while(!q.empty()) {
+    //         int node = q.front();
+    //         q.pop();
+    //         ans.push_back(node);
+    //         for(int nbr: adj[node]) {
+    //             indegree[nbr]--;
+    //             if(indegree[nbr] == 0) q.push(nbr);
+    //         }
+    //     }
+    //     sort(ans.begin(), ans.end());
+    //     return ans;
+    }
+};
