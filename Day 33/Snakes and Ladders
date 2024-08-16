@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<int> findCoordinates(int currVal,int n){
+        vector<int> pos(2);
+        pos[0]=n- (currVal-1)/n -1;
+        pos[1]=(currVal-1)%n;
+        if(pos[0]%2==n%2){
+            pos[1]=n-1-pos[1];
+        }
+        return pos;
+    }
+    int snakesAndLadders(vector<vector<int>>& board) {
+        int n=board.size();
+        vector<vector<bool>> visited(n,vector<bool>(n));
+        queue<int> q;
+        q.push(1);
+        visited[n-1][0]=true;
+        int minSteps=0;
+        while(!q.empty()){
+            int size=q.size();
+            while(size-->0){
+                int currVal=q.front();q.pop();
+                if(currVal==n*n)   return minSteps;
+
+                for(int dice=1;dice<=6;dice++){
+                    if(dice+currVal>n*n)    continue;
+                    vector<int> pos=findCoordinates(currVal+dice,n);
+                    int row=pos[0];
+                    int col=pos[1];
+                    if(visited[row][col]==true) continue;
+
+                    visited[row][col]=true;
+
+                    if(board[row][col]==-1) q.push(dice+currVal);
+                    else    q.push(board[row][col]);
+                }
+            }
+            minSteps++;
+        }
+        return -1;
+    }
+};
