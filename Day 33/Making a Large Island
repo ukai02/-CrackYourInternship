@@ -1,0 +1,67 @@
+class Solution {
+public:
+    void dfs(int id,int &count,int i,int j,int m,int n,vector<vector<int>>& grid){
+        if(i<0 || j<0 || i>=n || j>=m || grid[i][j]>1 || grid[i][j]==0)  return;
+        else{
+            grid[i][j]=id;
+            dfs(id,count,i+1,j,m,n,grid);
+            dfs(id,count,i,j+1,m,n,grid);
+            dfs(id,count,i,j-1,m,n,grid);
+            dfs(id,count,i-1,j,m,n,grid);
+            count++;
+        }
+    }
+    bool checkValid(int i,int j,int m,int n){
+        if(i<0 || j<0 || i>=n || j>=m)  return false;
+        return true;
+    }
+    int largestIsland(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        unordered_map<int,int> islandSize;
+        int id=2;
+        int MAX=INT_MIN;
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==1){
+                    int count=0;
+                    dfs(id,count,i,j,m,n,grid);
+                    islandSize[id]=count;
+                    id++;
+                }
+            }
+        }
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==0){
+                    int sum=0;
+                    set<int> s;//for storing using values of id's
+                    if(checkValid(i-1,j,m,n) && grid[i-1][j]>1 && s.find(grid[i-1][j])==s.end()){
+                        s.insert(grid[i-1][j]);
+                        auto it=islandSize.find(grid[i-1][j]);
+                        sum+=it->second;
+                    }
+                    if(checkValid(i+1,j,m,n) && grid[i+1][j]>1 && s.find(grid[i+1][j])==s.end()){
+                        s.insert(grid[i+1][j]);
+                        auto it=islandSize.find(grid[i+1][j]);
+                        sum+=it->second;
+                    }
+                    if(checkValid(i,j-1,m,n) && grid[i][j-1]>1 && s.find(grid[i][j-1])==s.end()){
+                        s.insert(grid[i][j-1]);
+                        auto it=islandSize.find(grid[i][j-1]);
+                        sum+=it->second;
+                    }
+                    if(checkValid(i,j+1,m,n) && grid[i][j+1]>1 && s.find(grid[i][j+1])==s.end()){
+                        s.insert(grid[i][j+1]);
+                        auto it=islandSize.find(grid[i][j+1]);
+                        sum+=it->second;
+                    }
+                    MAX=max(MAX,1+sum);
+                }
+            }
+        }
+        return MAX==INT_MIN ? m*n:MAX;
+    }
+};
