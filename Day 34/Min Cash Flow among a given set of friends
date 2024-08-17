@@ -1,0 +1,85 @@
+//{ Driver Code Starts
+// Initial template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+// User function Template for C++
+class Solution {
+  public:
+    vector<vector<int>> minCashFlow(vector<vector<int>> &t, int n)
+        {
+            vector<int>frds(n+1);
+            int mini=INT_MAX;
+            for(int i=0;i<n;i++)
+            {
+               for(int j=0;j<n;j++)
+               {
+                   frds[i]+=t[j][i]-t[i][j];
+               }
+            }
+            int minIndex=distance(frds.begin(),min_element(frds.begin(),frds.end()));
+            int maxIndex=distance(frds.begin(),max_element(frds.begin(),frds.end()));
+            vector<vector<int>>ans(n,vector<int>(n));
+            while(frds[minIndex]!=frds[maxIndex] && frds[minIndex]!=0)
+            {
+                int mini=min(-frds[minIndex],frds[maxIndex]);
+                ans[minIndex][maxIndex]+=mini;
+                frds[minIndex]+=mini;
+                frds[maxIndex]-=mini;
+                minIndex=distance(frds.begin(),min_element(frds.begin(),frds.end()));
+                maxIndex=distance(frds.begin(),max_element(frds.begin(),frds.end()));
+            }
+            return ans;
+        }
+};
+
+
+//{ Driver Code Starts.
+
+vector<int> balance(vector<vector<int>>& v, int n) {
+    vector<int> bal(n, 0);
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            bal[i] -= v[i][j];
+            bal[j] += v[i][j];
+        }
+    }
+    return bal;
+}
+
+bool isValid(vector<vector<int>>& g, vector<vector<int>>& r, int n) {
+    return balance(g, n) == balance(r, n);
+}
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        vector<vector<int>> g(n, vector<int>(n));
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++)
+                cin >> g[i][j];
+        }
+        Solution obj;
+        vector<vector<int>> r = obj.minCashFlow(g, n);
+        if (isValid(g, r, n) == false) {
+            cout << "-1\n";
+            continue;
+        }
+        int flow = 0;
+        for (auto j : r) {
+            for (auto i : j) {
+                if (i > 0)
+                    flow++;
+            }
+        }
+        cout << flow << "\n";
+    }
+    return 0;
+}
+// } Driver Code Ends
