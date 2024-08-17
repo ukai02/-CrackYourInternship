@@ -1,0 +1,52 @@
+class Solution {
+    vector<int> par;
+    vector<int> rank;
+
+    int find(int a)
+    {
+        if(par[a]==-1)return a;
+        return par[a]=find(par[a]);
+    }
+
+    void union_(int a, int b)
+    {
+        int A = find(a), B=find(b);
+
+        // if(A==B)return;
+
+        if(rank[A]==rank[B])
+        {
+            par[A]=B;
+            rank[B]++;
+        }
+
+        else if(rank[A]>rank[B])
+                par[B]=A;
+        else 
+                par[A]=B;
+
+    }
+
+
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n = edges.size();
+        par.resize(n+1,-1);
+        rank.resize(n+1,0);
+
+
+// Simple Just 1 step Iterate over edges . The edge forming cycle needs to be returned,
+
+        for(auto &e :edges)
+        {
+            int a = e[0], b=e[1];
+
+            if(find(a)==find(b)) 
+                return e;
+            else 
+                union_(a,b);
+        }
+
+        return {};
+    }
+};
