@@ -1,0 +1,23 @@
+class Solution {
+public:
+    void count(vector<int> &v,int &ans,int n,int curr){
+
+        if(curr==n+1){
+            ans+=1;
+            return;
+        }
+        for(int i=1;i<=n;i++){
+            if(v[i]==0 && (curr%i==0 || i%curr==0)){
+                v[i]=curr;
+                count(v,ans,n,curr+1);
+                v[i]=0;
+            }
+        }
+    }
+    int countArrangement(int n) {
+        vector<int> v(n+1);
+        int ans=0;
+        count(v,ans,n,1);
+        return ans;
+    }
+};
