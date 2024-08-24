@@ -1,0 +1,41 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+
+class Solution {
+  public:
+    int longestCommonSubstr(string str1, string str2) {
+        
+        int ans = 0;
+        string a;
+        for(int i=0;i<str1.size();i++){
+            a = "";
+            for(int j=i;j<str1.size();j++){
+                a+=str1[j];
+                if(str2.find(a) <= str2.size()){
+                    ans = max(ans,j-i+1);
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
+
+//{ Driver Code Starts.
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        string s1, s2;
+        cin >> s1 >> s2;
+        Solution ob;
+
+        cout << ob.longestCommonSubstr(s1, s2) << endl;
+    }
+}
+// } Driver Code Ends
