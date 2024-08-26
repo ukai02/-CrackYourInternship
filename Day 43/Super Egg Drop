@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int superEggDrop(int k, int n) {
+        /*
+            dp[k][i] = max floor count with k eggs and i steps
+            dp[k][i] = 1 + dp[k][i-1] + dp[k-1][i-1]
+        */
+
+        int dp[k+1][n+1];
+        memset(dp, 0, sizeof(dp));
+        for(int step=1; step<=n; step++){
+            for(int egg=1; egg<=k; egg++){
+                dp[egg][step] = 1 + dp[egg][step-1] + dp[egg-1][step-1];
+            }
+            if(dp[k][step]>=n) return step;
+        }
+        return -1;
+    }
+};
