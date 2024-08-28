@@ -1,0 +1,67 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+class Solution {
+public:
+    int minimumCostOfBreaking(vector<int> X, vector<int> Y, int M, int N){
+        sort(X.begin(),X.end(),greater<int>());
+        sort(Y.begin(),Y.end(),greater<int>());
+        
+        int v=1,h=1;
+        
+        int i=0,j=0,cost = 0;
+        while (i<X.size() && j<Y.size()) {
+            if (X[i] >= Y[j]) {
+                cost += (X[i]*h);
+                v++;
+                i++;
+            } else {
+                cost += (Y[j]*v);
+                h++;
+                j++;
+            }
+        }
+        
+        while (i<X.size()) {
+            cost += (X[i]*h);
+            v++;
+            i++;
+        }
+        
+        while (j<Y.size()) {
+            cost += (Y[j]*v);
+            h++;
+            j++;
+        }
+        
+        return cost;
+    }
+};
+
+
+
+//{ Driver Code Starts.
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+	    int m, n;
+	    cin >> m >> n;
+	    vector<int>X(m - 1), Y(n - 1);
+	    for(int i = 0; i < m - 1; i++){
+	        cin >> X[i];
+	    }
+	    for(int i = 0; i < n - 1; i++){
+	        cin >> Y[i];
+	    }
+	    Solution ob;
+	    int ans = ob.minimumCostOfBreaking(X, Y, m, n);
+	    cout << ans<<endl;
+	}
+	return 0;
+}
+
+// } Driver Code Ends
